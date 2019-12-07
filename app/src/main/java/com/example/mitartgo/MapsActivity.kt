@@ -14,14 +14,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.*
 import java.net.URL
 
 
@@ -96,8 +90,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-
-
+        mMap.setMapStyle(
+            MapStyleOptions.loadRawResourceStyle(
+                this, R.raw.maplayout));
         setUpMap()
     }
 
@@ -114,6 +109,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
         mMap.uiSettings.setMapToolbarEnabled(false);
         mMap.uiSettings.isMyLocationButtonEnabled = false;
+        mMap.uiSettings.isScrollGesturesEnabled = false
         LocationUpdates()
         gatherArtPieces()
         mMap.setOnMarkerClickListener(this);
@@ -121,6 +117,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
     private fun gatherArtPieces(){
         var art = mapOf("image" to "https://listart.mit.edu/sites/default/files/styles/slideshow/public/Bertoia_Altarpiece%20for%20MIT%20Chapel3.jpg", "title" to "Altarpiece for MIT Chapel", "artist" to "Harry Bertoia", "date" to "1955", "medium" to "Brazed steel", "size" to "240 in. (609.6 cm)", "credit" to "Commissioned for Eero Saarinen Chapel, MIT", "location" to "MIT Chapel, 48 Massachusetts Ave, Cambridge, MA 02139", "description" to "Bertoia’s altarpiece screen, or reredos, was commissioned for Eero Saarinen’s early modernist, non-denominational MIT Chapel in 1955. Suspended over the main altar, his cascading, open fret screen of slim metal rods and crossplates scatters light throughout the chapel. Described as one of Bertoia’s most striking works, it is an integral part of the altar. Here, Bertoia has liberated sculpture from its base to usher in the contemporary era of spatial sculpture.")
+
+
         //print(art)
         //arts.add(art)
         val name = art["image"]
