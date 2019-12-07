@@ -1,26 +1,42 @@
 package com.example.mitartgo
 
+import android.content.Intent
+import com.example.mitartgo.R
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.location.Location
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Looper
+import android.util.Log
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.google.android.gms.location.FusedLocationProviderClient
-
+import com.google.android.gms.location.*
+import com.google.android.gms.location.LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.location.LocationServices;
+import java.net.URL
 
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var lastLocation: Location
+    private lateinit var locationCallback: LocationCallback
+
+    private lateinit var markers: MutableCollection<Marker>
+    //temp
+    private lateinit var arts : MutableCollection<Map<String,String>>
+
+
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
@@ -31,11 +47,41 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(R.layout.activity_maps)
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
-                .findFragmentById(R.id.map) as SupportMapFragment
+            .findFragmentById(R.id.map) as SupportMapFragment
+
         mapFragment.getMapAsync(this)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
+        locationCallback = object : LocationCallback() {
+
+            var updating = false
+            override fun onLocationResult(locationResult: LocationResult?) {
+                if (updating) return
+                updating = true
+                locationResult ?: return
+                for (location in locationResult.locations) {
+                    lastLocation = location
+                    val currentLatLng = LatLng(location.latitude, location.longitude)
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
+                }
+                updating = false
+            }
+        }
+    }
+
+
+
+    private fun LocationUpdates() {
+        val locationRequest = LocationRequest.create()
+        val priority = PRIORITY_BALANCED_POWER_ACCURACY
+        locationRequest.priority = priority
+        locationRequest.interval =  3000
+
+        locationRequest.numUpdates = 99999 //set to Int.MAX_VALUE
+
+
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
     }
 
     /**
@@ -50,11 +96,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Add a marker in Sydney and move the camera
-        val mit = LatLng(0.3601, -0.0942)
-        //mMap.addMarker(MarkerOptions().position(mit).title("MIT"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mit, 15f))
-        mMap.getUiSettings().setZoomControlsEnabled(true)
+
 
         setUpMap()
     }
@@ -69,14 +111,41 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.isMyLocationEnabled = true
 
 // 2
-        fusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
-            // Got last known location. In some rare situations this can be null.
-            // 3
-            if (location != null) {
-                lastLocation = location
-                val currentLatLng = LatLng(location.latitude, location.longitude)
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
-            }
-        }
+
+        mMap.uiSettings.setMapToolbarEnabled(false);
+        mMap.uiSettings.isMyLocationButtonEnabled = false;
+        LocationUpdates()
+        gatherArtPieces()
+        mMap.setOnMarkerClickListener(this);
+    }
+
+    private fun gatherArtPieces(){
+        var art = mapOf("image" to "https://listart.mit.edu/sites/default/files/styles/slideshow/public/Bertoia_Altarpiece%20for%20MIT%20Chapel3.jpg", "title" to "Altarpiece for MIT Chapel", "artist" to "Harry Bertoia", "date" to "1955", "medium" to "Brazed steel", "size" to "240 in. (609.6 cm)", "credit" to "Commissioned for Eero Saarinen Chapel, MIT", "location" to "MIT Chapel, 48 Massachusetts Ave, Cambridge, MA 02139", "description" to "Bertoia’s altarpiece screen, or reredos, was commissioned for Eero Saarinen’s early modernist, non-denominational MIT Chapel in 1955. Suspended over the main altar, his cascading, open fret screen of slim metal rods and crossplates scatters light throughout the chapel. Described as one of Bertoia’s most striking works, it is an integral part of the altar. Here, Bertoia has liberated sculpture from its base to usher in the contemporary era of spatial sculpture.")
+        //print(art)
+        //arts.add(art)
+        val name = art["image"]
+        val url_value = URL(name)
+        var bMap = BitmapFactory.decodeResource(getResources(), R.drawable.chapel)
+        var b = Bitmap.createScaledBitmap(bMap,150,150,false)
+
+        var mark = mMap.addMarker(
+            MarkerOptions()
+                .position(LatLng(42.358420,-71.093680))
+                .title(art.get("title"))
+                .icon(BitmapDescriptorFactory.fromBitmap(b))
+
+        )
+
+        Log.d("dbg", "Marker: " + mark.title)
+
+        //markers.add(mark)
+
+    }
+
+    override fun onMarkerClick(p0: Marker): Boolean {
+        Log.d("dbg","User clicked " + p0.title)
+        val intent = Intent(this, ArtDetailActivity::class.java)
+        startActivity(intent)
+        return false
     }
 }

@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">MITArt Go</string>
+    <string name="app_name">MITArtGo</string>
     <string name="title_activity_maps">Map</string>
-    <string name="google_maps_key">AIzaSyDABC4793j_9XfyoAnL5a3dG5tM2-jsB10</string>
 </resources>
