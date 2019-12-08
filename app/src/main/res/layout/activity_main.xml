@@ -4,22 +4,85 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:translationY="0dp"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/exploreBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="161dp"
-        android:layout_marginLeft="161dp"
-        android:layout_marginTop="459dp"
-        android:layout_marginEnd="161dp"
-        android:layout_marginRight="161dp"
-        android:layout_marginBottom="224dp"
-        android:text="Explore!"
-        android:textIsSelectable="false"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="412dp"
+        android:layout_height="700dp"
+        android:background="#2D3130"
+        android:baselineAligned="false"
+        android:orientation="vertical"
+        android:translationY="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.269"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="207dp"
+            android:layout_height="219dp"
+            android:translationX="100dp"
+            android:translationY="50dp"
+            app:srcCompat="@drawable/icon" />
+
+        <ImageView
+            android:id="@+id/name"
+            android:layout_width="280dp"
+            android:layout_height="123dp"
+            android:contentDescription="@string/app_name"
+            android:translationX="60dp"
+            android:translationY="50dp"
+            app:srcCompat="@drawable/logo" />
+
+        <ImageButton
+            android:id="@+id/loginbutton"
+            android:layout_width="145dp"
+            android:layout_height="56dp"
+            android:layout_gravity="center_horizontal"
+            android:background="#00FFFFFF"
+            android:scaleType="fitXY"
+            android:tint="#00FFFFFF"
+            android:translationY="100dp"
+            app:srcCompat="@drawable/loginbutton" />
+
+        <ImageButton
+            android:id="@+id/guestbutton"
+            android:layout_width="145dp"
+            android:layout_height="61dp"
+            android:layout_gravity="center_horizontal"
+            android:background="#00FFFFFF"
+            android:scaleType="fitXY"
+            android:translationY="-25dp"
+            app:srcCompat="@drawable/guestbutton" />
+
+        <ImageButton
+            android:id="@+id/signupbutton"
+            android:layout_width="145dp"
+            android:layout_height="68dp"
+            android:layout_gravity="center_horizontal"
+            android:background="#00FFFFFF"
+            android:scaleType="fitXY"
+            android:translationY="50dp"
+            app:srcCompat="@drawable/signupbutton" />
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="411dp"
+        android:layout_marginRight="411dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_end="819dp"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
