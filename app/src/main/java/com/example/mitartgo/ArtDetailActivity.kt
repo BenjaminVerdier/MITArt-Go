@@ -12,6 +12,9 @@ class ArtDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+
         setContentView(R.layout.activity_art_detail)
         val title = intent.getStringExtra("title")
         val image = intent.getStringExtra("image")
@@ -23,7 +26,10 @@ class ArtDetailActivity : AppCompatActivity() {
         Log.d("dbg", description!!)
         Log.d("dbg", image!!)
 
-        art_title_view.text = title
+
+        supportActionBar!!.title = title
+
+        //art_title_view.text = title
         art_description_view.text = description
         art_date_view.text = date
         artist_name_view.text  = artist

@@ -23,14 +23,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/art_title_view"
-                android:layout_width="match_parent"
-                android:layout_height="26dp"
-                android:gravity="center"
-                android:text="@string/art_title"
-                android:textColor="#BEBEBE" />
-
-            <TextView
                 android:id="@+id/artist_name_view"
                 android:layout_width="match_parent"
                 android:layout_height="26dp"
