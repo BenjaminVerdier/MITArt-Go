@@ -3,6 +3,7 @@ package com.example.mitartgo
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.text.LineBreaker.JUSTIFICATION_MODE_INTER_WORD
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -23,6 +24,7 @@ class ArtDetailActivity : AppCompatActivity() {
 
         textView.text = title
         textView2.text = description
+
 
 
         var bMap : Bitmap? = null
