@@ -95,6 +95,12 @@ class LoginActivity : AppCompatActivity() {
                 loginViewModel.login(username.text.toString(), password.text.toString())
             }
         }
+
+        if (intent.getStringExtra("type") == "login") {
+            login.text = "Login"
+        } else {
+            login.text = "Sign Up"
+        }
     }
 
     private fun updateUiWithUser(model: LoggedInUserView) {
