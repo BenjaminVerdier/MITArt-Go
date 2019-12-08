@@ -18,6 +18,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import kotlinx.android.synthetic.main.activity_maps.*
 import java.io.IOException
 import java.io.InputStream
 import java.net.HttpURLConnection
@@ -82,6 +83,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         mapFragment.getMapAsync(this)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        buttoncollection.setOnClickListener{
+            val intent = Intent(this, CollectionActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 
