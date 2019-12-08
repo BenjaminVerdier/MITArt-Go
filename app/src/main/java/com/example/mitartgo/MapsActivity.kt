@@ -68,6 +68,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar!!.hide()
 
         val policy =
             StrictMode.ThreadPolicy.Builder().permitAll().build()
@@ -157,19 +158,38 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         return map
     }
 
+    private fun GetIconResourceFromTitle(title: String): Int{
+        when (title) {
+            "TV Man or Five Piece Cube with Strange Hole" -> return R.drawable.tvrock
+            "Altarpiece for MIT Chapel" -> return R.drawable.chruch
+            "Through Layers and Leaves (Closer and Closer)" -> return R.drawable.colorwalls
+            "La Grande Voile (The Big Sail)" -> return R.drawable.metalsails
+            "Against the Run" -> return R.drawable.clock
+            "Reclining Figure (Working Model for Lincoln Center Sculpture)" -> return R.drawable.rockcurve
+            "Aesop’s Fables, II" -> return R.drawable.redmetalthing
+            "Ray and Maria Stata Center" -> return R.drawable.weirdbuilding
+            "Chord" -> return R.drawable.whitestring
+            "Ring Stone" -> return R.drawable.chains
+            else -> {
+                return 0
+            }
+        }
+    }
+
     private fun gatherArtPieces(){
 
         artPieces = GetMapOfArtPieces()
 
         for (artPiece in artPieces) {
             Log.d("dbg", artPiece["title"]!!)
-            var bMap : Bitmap? = null
+            var bMap = BitmapFactory.decodeResource(resources,GetIconResourceFromTitle(artPiece["title"]!!))
             while (bMap == null) {
-                bMap = getBitmapFromURL(artPiece.get("image"))
+                //bMap = getBitmapFromURL(artPiece.get("image"))
+                bMap = BitmapFactory.decodeResource(resources,R.drawable.tvrock)
             }
 
             val b = Bitmap.createScaledBitmap(bMap!!,150,150,false)
-            var mark = mMap.addMarker(
+            mMap.addMarker(
                 MarkerOptions()
                     .position(LatLng(artPiece["lat"]!!.toDouble(),artPiece["long"]!!.toDouble()))
                     .title(artPiece.get("title"))
