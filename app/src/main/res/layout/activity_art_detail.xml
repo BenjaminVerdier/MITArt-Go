@@ -23,14 +23,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/art_title_view"
-                android:layout_width="match_parent"
-                android:layout_height="26dp"
-                android:gravity="center"
-                android:text="@string/art_title"
-                android:textColor="#BEBEBE" />
-
-            <TextView
                 android:id="@+id/artist_name_view"
                 android:layout_width="match_parent"
                 android:layout_height="26dp"
@@ -69,16 +61,19 @@
 
     <Button
         android:id="@+id/collectBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="238dp"
+        android:layout_height="78dp"
         android:layout_marginStart="161dp"
         android:layout_marginLeft="161dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="162dp"
         android:layout_marginRight="162dp"
-        android:layout_marginBottom="24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/addtobutton"
+        app:layout_constraintBottom_toBottomOf="@+id/collectedImg"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/collectedImg"
@@ -89,9 +84,9 @@
         android:layout_marginEnd="140dp"
         android:layout_marginRight="140dp"
         android:layout_marginBottom="24dp"
+        android:background="@drawable/collected"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@color/colorPrimary" />
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
