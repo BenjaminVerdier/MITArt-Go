@@ -24,19 +24,6 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 
-val Marker.nameOfArtpiece: String
-    get() = nameOfArtpiece
-
-
-val Marker.imageOfArtpiece: String
-    get() = imageOfArtpiece
-
-val Marker.descriptionOfArtpiece: String
-    get() = descriptionOfArtpiece
-
-
-
-
 fun getBitmapFromURL(src: String?): Bitmap? {
     return try {
         val url = URL(src)
@@ -63,11 +50,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
     private lateinit var markers: MutableCollection<Marker>
     //temp
-    private lateinit var artPieces : MutableList<MutableMap<String,String>>
 
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+        var userCol : MutableList<MutableMap<String,String>> = mutableListOf()
+        private lateinit var artPieces : MutableList<MutableMap<String,String>>
+        fun addArtPiece(title: String) {
+            for (artpiece in artPieces) {
+                if (artpiece["title"] == title) {
+                    userCol.add(artpiece)
+                    return
+                }
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -183,6 +179,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        fusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
+            if (location != null) {
+                lastLocation = location
+                val currentLatLng = LatLng(location.latitude, location.longitude)
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
+            }
+        }
+
+        Log.d("dbg", userCol.toString())
+    }
+
     override fun onMarkerClick(p0: Marker): Boolean {
         Log.d("dbg","User clicked " + p0.title)
         val intent = Intent(this, ArtDetailActivity::class.java)
@@ -191,6 +201,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 intent.putExtra("title", artPiece["title"])
                 intent.putExtra("image", artPiece["image"])
                 intent.putExtra("description", artPiece["description"])
+                intent.putExtra("artist", artPiece["artist"])
+                intent.putExtra("date", artPiece["date"])
                 break
             }
         }

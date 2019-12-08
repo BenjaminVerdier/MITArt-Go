@@ -10,4 +10,9 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="art_title">Title</string>
+    <string name="art_description">Description</string>
+    <string name="artist_name">Artist</string>
+    <string name="art_date">Date</string>
+    <string name="art_picture">Picture</string>
 </resources>
